@@ -184,14 +184,12 @@
         }
 
         function lap() {
-            if (isRunning) {
-                const currentTime = elapsedTime;
-                const interval = currentTime - lastLapTime;
-                const lapIndex = lapTimes.length;
-                lapTimes.push({ total: currentTime, interval: interval, reason: '' });
-                lastLapTime = currentTime;
-                renderLaps();
-            }
+            const currentTime = elapsedTime;
+            const interval = currentTime - lastLapTime;
+            const lapIndex = lapTimes.length;
+            lapTimes.push({ total: currentTime, interval: interval, reason: '' });
+            lastLapTime = currentTime;
+            renderLaps();
         }
 
         function deleteLap(index) {
@@ -235,6 +233,7 @@
                 alert('Nenhum lap registrado para salvar.');
                 return;
             }
+            const fileName = prompt('Digite o nome do arquivo (sem extensão):', 'laps') || 'laps';
             let csvContent = 'Lap,Tempo Total,Diferença,Motivo\n';
             lapTimes.forEach((lap, index) => {
                 csvContent += `${index + 1},"${formatTime(lap.total)}","${formatTime(lap.interval)}","${lap.reason}"\n`;
@@ -245,7 +244,7 @@
             const link = document.createElement('a');
             const url = URL.createObjectURL(blob);
             link.setAttribute('href', url);
-            link.setAttribute('download', 'laps.csv');
+            link.setAttribute('download', `${fileName}.csv`);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
